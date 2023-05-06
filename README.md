@@ -9,10 +9,10 @@ There are 2 notebooks and accompanying datasets in this repository:
 2: 'Sample_data_visualization' is a notebook providing basic data visualization and exploration for the figures provided in the publication. Required csvs are 'All_data.csv','site_infs.csv'
 
 Required Python Packages to run the code:
-pandas
-numpy
-matplotlib
-seaborn
-math
-tensorflow as tf
+pandas,
+numpy,
+matplotlib,
+seaborn,
+math,
+tensorflow,
 sklearn
