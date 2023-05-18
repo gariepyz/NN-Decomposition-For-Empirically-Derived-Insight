@@ -1,4 +1,4 @@
-# Neural-Network-Decomposition-Technique
+# Novel Neural-Network-Decomposition-Technique
 Code used for the publication "Machine-Learning-Driven High-Entropy Alloy Catalyst Discovery to Circumvent the Scaling Relation for CO2 Reduction Reaction"
 ACS Catal. 2022, 12, 24, 14864–14871 (https://doi.org/10.1021/acscatal.2c03675)
 
