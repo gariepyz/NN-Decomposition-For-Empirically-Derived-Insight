@@ -11,6 +11,7 @@ There are 2 notebooks and accompanying files/datasets in this repository:
 3: 'helpers.py' is a python file with a classes for feature embedding and the NN decomposition.
 
 4: 'All_data.csv' and 'site_infs.csv' contain the raw dataset data generated through DFT and neural generators.
+
 Required Python Packages to run the code:
 pandas,
 numpy,
