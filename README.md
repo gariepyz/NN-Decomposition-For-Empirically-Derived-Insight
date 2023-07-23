@@ -7,7 +7,13 @@ This notebook provides a first ever look into the intermediate rotation mechanic
     <img width="60%" src="images/spin.png"> 
 </p>
 
-This mechanic is then used as a design principle to create some of the best CO2RR catalytic surfaces in computational literature. The key lies in splitting key potential limiting steps into smaller steps through rotational reconfiguration. 
+This mechanic was elucidated through a Neural Network decomposition and spatial averaging technique visualized below. In short, the technique extracts the weights/bias of the model and outputs the indiviudal atomic contributions learned from training in an easily interpretable way.
+
+<p align="center" width="10%">
+    <img width="90%" src="images/decomp.png"> 
+</p
+
+Using the insights derived the from decompistion method as a design principle, we created some of the best CO2RR catalytic surfaces in computational literature. The key lies in splitting key potential limiting steps into smaller steps through rotational reconfiguration. 
 
 <p align="center" width="10%">
     <img width="60%" src="images/path.png"> 
