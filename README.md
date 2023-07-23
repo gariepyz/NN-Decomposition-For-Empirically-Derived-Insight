@@ -4,13 +4,13 @@ ACS Catal. 2022, 12, 24, 14864–14871 (https://doi.org/10.1021/acscatal.2c03675
 
 This notebook provides a first ever look into the intermediate rotation mechanic observed on HEAs.
 <p align="center" width="75%">
-    <img width="50%" src="images/spin.png"> 
+    <img width="60%" src="images/spin.png"> 
 </p>
 
 This mechanic is then used as a design principle to create some of the best CO2RR catalytic surfaces in computational literature. The key lies in splitting key potential limiting steps into smaller steps through rotational reconfiguration. 
 
 <p align="center" width="10%">
-    <img width="90%" src="images/path.png"> 
+    <img width="60%" src="images/path.png"> 
 </p
 
 There are 2 notebooks and accompanying files/datasets in this repository:
