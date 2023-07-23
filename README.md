@@ -2,7 +2,7 @@
 This repository provides the code used for my publication "Machine-Learning-Driven High-Entropy Alloy Catalyst Discovery to Circumvent the Scaling Relation for CO2 Reduction Reaction"
 ACS Catal. 2022, 12, 24, 14864–14871 (https://doi.org/10.1021/acscatal.2c03675)
 
-This notebook provides a first ever look into the intermediate rotation mechanic observed on HEAs.
+This notebook provides a first ever look into the intermediate rotation mechanic observed on HEAs that allows them to break the BEP linear scaling relation.
 <p align="center" width="75%">
     <img width="60%" src="images/spin.png"> 
 </p>
