@@ -65,7 +65,7 @@ class Model_Analyzer():
         h = model.fit(x_train, y_train, epochs=epoch, callbacks=[],verbose=0 )
         
         self.model = model
-        return model
+        return model,x_train, x_test, y_train, y_test
     #NN decomposition alg for a single site
     def single_decomposition(self,site,model):
         #extract internal NN parameters and format a sample input
@@ -118,4 +118,26 @@ class Model_Analyzer():
             img = mpimg.imread('images/atomic_arrangement.png')
             plt.imshow(img, extent=[0, 11, 0, 1.5], aspect='auto', alpha=1)
         return site, influences
-    
+    def import_influences(self,ads):
+        vis = pd.read_csv('site_infs.csv')
+        vis = vis[vis['Adsorbate']==ads]
+        vis = vis[vis['Site']==1]
+        return vis
+    def calculate_std(self,x_train, x_test, y_train, y_test):
+        label=[]
+
+        test = [i[0] for i in self.model.predict(x_test).tolist()]
+        [label.append('test') for l in test]
+
+        train = [i[0] for i in self.model.predict(x_train).tolist()]
+        [label.append('train') for l in train]
+
+        pred_y = test + train
+        real_y =list(y_test)+list(y_train)
+        df = pd.DataFrame(data={'predict': pred_y, 'real': real_y,'label':label})
+        std_dev= np.std(df['predict'] - df['real'])
+
+        #Upper and low bounds for parity plot
+        df1 = pd.DataFrame(data={'x':[-4,4],'lines': [-4-std_dev,4-std_dev],'hue':['low','low']})
+        df2 = pd.DataFrame(data={'x':[-4,4],'lines': [-4+std_dev,4+std_dev],'hue':['up','up']})  
+        return df,df1,df2
