@@ -3,6 +3,10 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib.image as mpimg
 
 class MyModel(tf.keras.Model):
   def __init__(self):
@@ -14,12 +18,18 @@ class MyModel(tf.keras.Model):
     x = self.w3(x)
     return tf.math.reduce_sum(x, axis=1,)
 
-class Model_analyzer:
-    def __init__(self,descriptor_dict,position_count,dataframe):
+class Model_Analyzer():
+    def __init__(self,descriptor_dict,position_count,dataset_name):
         self.dictionnary = descriptor_dict
         self.position_count = position_count
-        self.dataframe = dataframe
+        self.dataset_name = dataset_name
         
+    def import_dataset(self,adsorbate):
+        df = pd.read_csv(self.dataset_name)
+        df_ads = df[df['Adsorbate']==adsorbate]       
+        self.dataframe=df_ads       
+        return df_ads    
+    
     def feature_embedding(self):
         #generate one hot encoded atomic positions (1-10)
         atomic_position_one_hot_encode=[]
@@ -32,7 +42,7 @@ class Model_analyzer:
                     position_i.append(0)
             atomic_position_one_hot_encode.append(position_i)
 
-        #generate features to train model
+        #generate features to train model using dictionnary
         descriptor_df = np.empty((self.dataframe.shape[0],len(atomic_position_one_hot_encode[0]),len(atomic_position_one_hot_encode[0])+len(self.dictionnary[list(self.dictionnary.keys())[0]])))
         for k in range(self.dataframe.shape[0]):
             data_point = np.empty((descriptor_df.shape[1],descriptor_df.shape[2]))
@@ -42,9 +52,22 @@ class Model_analyzer:
                     if i==j:
                         data_point[i,:] =  self.dictionnary[row[i]]+atomic_position_one_hot_encode[i]
             descriptor_df[k,:,:] = data_point
-        return descriptor_df
+        y = self.dataframe['Eads']
+        self.x = descriptor_df
+        self.y = y
+        return descriptor_df,y
 
-    def NN_decomposition(self,site,model):
+    def train_model(self,split_size,epoch=3000):
+        x_train, x_test, y_train, y_test = train_test_split(self.x,self.y, test_size=split_size)
+
+        model = MyModel()
+        model.compile(optimizer='adam', loss='mse', metrics=['mae','mse'])
+        h = model.fit(x_train, y_train, epochs=epoch, callbacks=[],verbose=0 )
+        
+        self.model = model
+        return model
+    #NN decomposition alg for a single site
+    def single_decomposition(self,site,model):
         #extract internal NN parameters and format a sample input
         params = model.trainable_variables
         p1 = np.array(params[0])
@@ -59,12 +82,12 @@ class Model_analyzer:
                 else:
                     position_i.append(0)
             site_conversion[i+1]=position_i
-
         elements=[]
 
         for i in list(self.dictionnary.keys()):
             elements.append(self.dictionnary[i]+site_conversion[site])
-        single_element=np.reshape(np.array(elements),(1,5,13))
+        #single_element=np.reshape(np.array(elements),(1,5,13))
+        single_element=np.reshape(np.array(elements),(1,len(self.dictionnary),self.position_count +len(self.dictionnary[list(self.dictionnary.keys())[0]])))
 
         #recreate basic NN from scratch using internal parameters
         step1 = np.dot(single_element,p1)
@@ -75,3 +98,24 @@ class Model_analyzer:
         avg_influence = float(str(np.mean(abs(np.array(step4))))[:6])
         res = f'Average site {site} influence across all elements: {avg_influence} eV/atom'
         return avg_influence,res
+    
+    def decompose(self,visualize=True):
+        influences=[]
+        site=[]
+        #perform decomposition for each site specified upon initialization
+        for i in range(self.position_count):
+            site.append(i+1)
+            avg_inf,x1 = self.single_decomposition(i+1,self.model)
+            influences.append(avg_inf)
+        if visualize:        
+            #Visualize Results
+            plt.bar(site, influences, align='center', alpha=1)
+            plt.xlabel('Sites')
+            plt.ylabel('Atomic Influence (eV/atom)')
+            plt.title('Empirically Dervied Infuence of Local Chemical Environment')
+            plt.xticks(site)
+            plt.grid(False)
+            img = mpimg.imread('images/atomic_arrangement.png')
+            plt.imshow(img, extent=[0, 11, 0, 1.5], aspect='auto', alpha=1)
+        return site, influences
+    
