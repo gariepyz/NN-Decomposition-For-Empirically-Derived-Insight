@@ -25,6 +25,10 @@ class Model_Analyzer():
         self.dataset_name = dataset_name
         
     def import_dataset(self,adsorbate):
+        '''
+        adsorbate: str
+        '''
+        
         df = pd.read_csv(self.dataset_name)
         df_ads = df[df['Adsorbate']==adsorbate]       
         self.dataframe=df_ads       
@@ -68,6 +72,11 @@ class Model_Analyzer():
         return model,x_train, x_test, y_train, y_test
     #NN decomposition alg for a single site
     def single_decomposition(self,site,model):
+        '''
+        site: int
+        model: TF sequantial model
+        '''
+        
         #extract internal NN parameters and format a sample input
         params = model.trainable_variables
         p1 = np.array(params[0])
@@ -100,6 +109,10 @@ class Model_Analyzer():
         return avg_influence,res
     
     def decompose(self,visualize=True):
+        '''
+        visualize: bool
+        '''
+        
         influences=[]
         site=[]
         #perform decomposition for each site specified upon initialization
@@ -119,11 +132,19 @@ class Model_Analyzer():
             plt.imshow(img, extent=[0, 11, 0, 1.5], aspect='auto', alpha=1)
         return site, influences
     def import_influences(self,ads):
+        '''
+        ads: str (COOH/CHO/CO)
+        '''
+        
         vis = pd.read_csv('site_infs.csv')
         vis = vis[vis['Adsorbate']==ads]
         vis = vis[vis['Site']==1]
         return vis
     def calculate_std(self,x_train, x_test, y_train, y_test):
+        '''
+        x/y: np.array
+        '''
+        
         label=[]
 
         test = [i[0] for i in self.model.predict(x_test).tolist()]
