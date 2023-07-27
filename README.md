@@ -24,7 +24,7 @@ There are 2 notebooks and accompanying files/datasets in this repository:
 1: 'Neural_Net_Decomposition_Method'is the main notebook outlining how to train a basic NN model with TF, extract internal weights, and perform a NN decomposition outlined in the publication. This notebook also allows you to extract the influence of atomic sites for your own dataset. The notebook also auto-generates conveniant visualizations of the derived influeces. Each visualization will be different due to model re-trains but a sample can be seen below:
 
 <p align="center" width="10%">
-    <img width="60%" src="images/autogen-nobg.png"> 
+    <img width="60%" src="images/autogen.png"> 
 </p
 
 2: 'Visualization_and_exploration_of_Dataset' is a supplementary notebook providing data visualization for the figures provided in the publication.
