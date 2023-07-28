@@ -71,6 +71,6 @@ Package dependencies
 - Numpy
 - Pandas
 - Matplotlib
-- Seaborn,
+- Seaborn
 - TensorFlow/Keras
 - Sklearn
